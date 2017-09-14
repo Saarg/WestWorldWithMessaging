@@ -87,20 +87,20 @@ public:
 //  miner will go home and sleep until his fatigue is decreased
 //  sufficiently
 //------------------------------------------------------------------------
-class GoHomeAndSleepTilRested : public State<Miner>
+class GoHomeAndSleepTilRestedMiner : public State<Miner>
 {
 private:
   
-  GoHomeAndSleepTilRested(){}
+  GoHomeAndSleepTilRestedMiner(){}
 
   //copy ctor and assignment should be private
-  GoHomeAndSleepTilRested(const GoHomeAndSleepTilRested&);
-  GoHomeAndSleepTilRested& operator=(const GoHomeAndSleepTilRested&);
+  GoHomeAndSleepTilRestedMiner(const GoHomeAndSleepTilRestedMiner&);
+  GoHomeAndSleepTilRestedMiner& operator=(const GoHomeAndSleepTilRestedMiner&);
  
 public:
 
   //this is a singleton
-  static GoHomeAndSleepTilRested* Instance();
+  static GoHomeAndSleepTilRestedMiner* Instance();
 
   virtual void Enter(Miner* miner);
 

@@ -116,7 +116,7 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
          << "WooHoo! Rich enough for now. Back home to mah li'lle lady";
       
-    pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());      
+    pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRestedMiner::Instance());      
   }
 
   //otherwise get more gold
@@ -140,14 +140,14 @@ bool VisitBankAndDepositGold::OnMessage(Miner* pMiner, const Telegram& msg)
 }
 //------------------------------------------------------------------------methods for GoHomeAndSleepTilRested
 
-GoHomeAndSleepTilRested* GoHomeAndSleepTilRested::Instance()
+GoHomeAndSleepTilRestedMiner* GoHomeAndSleepTilRestedMiner::Instance()
 {
-  static GoHomeAndSleepTilRested instance;
+  static GoHomeAndSleepTilRestedMiner instance;
 
   return &instance;
 }
 
-void GoHomeAndSleepTilRested::Enter(Miner* pMiner)
+void GoHomeAndSleepTilRestedMiner::Enter(Miner* pMiner)
 {
   if (pMiner->Location() != shack)
   {
@@ -164,7 +164,7 @@ void GoHomeAndSleepTilRested::Enter(Miner* pMiner)
   }
 }
 
-void GoHomeAndSleepTilRested::Execute(Miner* pMiner)
+void GoHomeAndSleepTilRestedMiner::Execute(Miner* pMiner)
 { 
   //if miner is not fatigued start to dig for nuggets again.
   if (!pMiner->Fatigued())
@@ -184,12 +184,12 @@ void GoHomeAndSleepTilRested::Execute(Miner* pMiner)
   } 
 }
 
-void GoHomeAndSleepTilRested::Exit(Miner* pMiner)
+void GoHomeAndSleepTilRestedMiner::Exit(Miner* pMiner)
 { 
 }
 
 
-bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
+bool GoHomeAndSleepTilRestedMiner::OnMessage(Miner* pMiner, const Telegram& msg)
 {
    SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 

@@ -40,7 +40,7 @@ bool Miner::Thirsty()const
 
 bool Miner::Fatigued()const
 {
-  if (m_iFatigue > TirednessThreshold)
+  if (m_iFatigue > TirednessThresholdMiner)
   {
     return true;
   }

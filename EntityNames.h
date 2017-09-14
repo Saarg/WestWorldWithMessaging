@@ -5,27 +5,33 @@
 
 enum 
 {
-  ent_Miner_Bob,
+	ent_Miner_Bob,
 
-  ent_Elsa
+	ent_Elsa,
+
+	ent_Jean
 };
 
 inline std::string GetNameOfEntity(int n)
 {
-  switch(n)
-  {
-  case ent_Miner_Bob:
+	switch(n)
+	{
+	case ent_Miner_Bob:
 
-    return "Miner Bob";
+		return "Miner Bob";
 
-  case ent_Elsa:
-    
-    return "Elsa"; 
+	case ent_Elsa:
 
-  default:
+		return "Elsa"; 
 
-    return "UNKNOWN!";
-  }
+	case ent_Jean:
+
+		return "Jean"; 
+
+	default:
+
+		return "UNKNOWN!";
+	}
 }
 
 #endif
