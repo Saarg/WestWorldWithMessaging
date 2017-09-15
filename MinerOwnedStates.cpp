@@ -7,6 +7,7 @@
 #include "MessageTypes.h"
 #include "Time/CrudeTimer.h"
 #include "EntityNames.h"
+#include "misc/Utils.h"
 
 #include <iostream>
 using std::cout;
@@ -113,10 +114,20 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
   //wealthy enough to have a well earned rest?
   if (pMiner->Wealth() >= ComfortLevel)
   {
-    cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
+	  if (RandFloat() < 0.5)
+      {
+        cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
          << "WooHoo! Rich enough for now. Back home to mah li'lle lady";
       
-    pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRestedMiner::Instance());      
+        pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRestedMiner::Instance());    
+      }
+	  else {
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
+         << "WooHoo! Rich enough for now. Let's go to the saloon";
+      
+        pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());    
+	  }
+      
   }
 
   //otherwise get more gold
@@ -228,8 +239,15 @@ void QuenchThirst::Enter(Miner* pMiner)
   if (pMiner->Location() != saloon)
   {    
     pMiner->ChangeLocation(saloon);
+    cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thisty!";
 
-    cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
+	Dispatch->DispatchMessage(0, //time delay
+                              pMiner->ID(),        //ID of sender
+                              ent_Jean,            //ID of recipient
+                              Msg_EnterSaloon,   //the message
+                              NO_ADDITIONAL_INFO); 
+
+	SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
   }
 }
 
@@ -237,6 +255,7 @@ void QuenchThirst::Execute(Miner* pMiner)
 {
   pMiner->BuyAndDrinkAWhiskey();
 
+  SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin' liquer";
 
   pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());  
@@ -245,13 +264,33 @@ void QuenchThirst::Execute(Miner* pMiner)
 
 void QuenchThirst::Exit(Miner* pMiner)
 { 
+  SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
 }
 
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-  //send msg to global message handler
+  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+
+  switch(msg.Msg)
+  {
+    case Msg_Fight:
+    {
+      cout << "\nMessage received by " << GetNameOfEntity(msg.Sender) <<
+           " at time: " << Clock->GetCurrentTime();
+
+      SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
+	  cout << "\n" << GetNameOfEntity(msg.Receiver) << ": If we have to fight i'll destroy you !"; 
+
+	  pMiner->GetFSM()->ChangeState(StartFighting::Instance());
+
+    }
+
+    return true;
+
+  }//end switch
+
   return false;
 }
 
@@ -284,6 +323,47 @@ void EatStew::Exit(Miner* pMiner)
 
 
 bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
+{
+  //send msg to global message handler
+  return false;
+}
+
+//------------------------------------------------------------------------StartAndKeepFighting
+
+StartFighting* StartFighting::Instance()
+{
+  static StartFighting instance;
+
+  return &instance;
+}
+
+void StartFighting::Enter(Miner* pMiner)
+{
+    
+}
+
+void StartFighting::Execute(Miner* pMiner)
+{
+  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Is getting smashed";
+
+  pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRestedMiner::Instance());  
+  pMiner->IncreaseFatigue();
+  pMiner->IncreaseFatigue();
+  pMiner->IncreaseFatigue();
+  pMiner->IncreaseFatigue();
+  pMiner->IncreaseFatigue();
+
+  pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRestedMiner::Instance());  
+}
+
+
+void StartFighting::Exit(Miner* pMiner)
+{ 
+  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That was not a good fight !";
+}
+
+
+bool StartFighting::OnMessage(Miner* pMiner, const Telegram& msg)
 {
   //send msg to global message handler
   return false;
