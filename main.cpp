@@ -29,7 +29,7 @@ int main()
   //create his wife
   MinersWife* Elsa = new MinersWife(ent_Elsa);
 
-  //create his wife
+  //create Drunkard
   Drunkard* Jean = new Drunkard(ent_Jean);
 
   //register them with the entity manager

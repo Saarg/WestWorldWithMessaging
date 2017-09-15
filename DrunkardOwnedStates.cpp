@@ -61,7 +61,23 @@ void GoBarAndDrink::Exit(Drunkard* pDrunkard)
 
 bool GoBarAndDrink::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
-  //send msg to global message handler
+  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+
+  switch(msg.Msg)
+  {
+    case Msg_EnterSaloon:
+    {
+      cout << "\nMessage received by " << GetNameOfEntity(msg.Sender) <<
+           " at time: " << Clock->GetCurrentTime();
+
+      SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
+	  cout << "\n" << GetNameOfEntity(msg.Receiver) << ": Hi " << GetNameOfEntity(msg.Sender) << "!";
+    }
+
+    return true;
+
+  }//end switch
+
   return false;
 }
 
@@ -102,13 +118,38 @@ void BecomeDrunkAndAgressive::Execute(Drunkard* pDrunkard)
 
 void BecomeDrunkAndAgressive::Exit(Drunkard* pDrunkard)
 {
-  cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Leavin' the bar cause none wanna fight";
+  // cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Leavin' the bar cause none wanna fight";
 }
 
 
 bool BecomeDrunkAndAgressive::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
-  //send msg to global message handler
+  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+
+  switch(msg.Msg)
+  {
+    case Msg_EnterSaloon:
+    {
+      cout << "\nMessage received by " << GetNameOfEntity(msg.Sender) <<
+           " at time: " << Clock->GetCurrentTime();
+
+      SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
+	  cout << "\n" << GetNameOfEntity(msg.Receiver) << ": I want to fight you " << GetNameOfEntity(msg.Sender) << "!"; 
+
+	  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+                              pDrunkard->ID(),        //ID of sender
+                              ent_Miner_Bob,            //ID of recipient
+                              Msg_Fight,   //the message
+                              NO_ADDITIONAL_INFO); 
+
+	  pDrunkard->GetFSM()->ChangeState(StartAndKeepFighting::Instance());
+
+    }
+
+    return true;
+
+  }//end switch
+
   return false;
 }
 //------------------------------------------------------------------------methods for StartAndKeepFighting
@@ -124,6 +165,7 @@ void GoHomeAndSleepTilRested::Enter(Drunkard* pDrunkard)
 {
   if (pDrunkard->Location() != drunkardShack)
   {
+	SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
     cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Walkin' home";
 
     pDrunkard->ChangeLocation(drunkardShack); 
@@ -135,6 +177,7 @@ void GoHomeAndSleepTilRested::Execute(Drunkard* pDrunkard)
   //if Drunkard is not fatigued start to dig for nuggets again.
 	if (!pDrunkard->Fatigued() && pDrunkard->Sober())
   {
+     SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
      cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " 
           << "All mah fatigue has drained away. Ready for another wonderful day !";
 
@@ -147,6 +190,7 @@ void GoHomeAndSleepTilRested::Execute(Drunkard* pDrunkard)
     pDrunkard->DecreaseFatigue();
 	pDrunkard->DecreaseAlcoholLevel();
 
+	SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
     cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "ZZZZ... ";
   } 
 }
@@ -172,13 +216,14 @@ StartAndKeepFighting* StartAndKeepFighting::Instance()
 
 void StartAndKeepFighting::Enter(Drunkard* pDrunkard)
 {
+	SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
     cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "I gonna rekt ur ass dude !";
 }
 
 void StartAndKeepFighting::Execute(Drunkard* pDrunkard)
 {
   //pDrunkard->HitBob();
-
+  SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Smashing Bob";
 
   // if( BobIsKO || DrunkardIsKO)
@@ -188,6 +233,7 @@ void StartAndKeepFighting::Execute(Drunkard* pDrunkard)
 
 void StartAndKeepFighting::Exit(Drunkard* pDrunkard)
 { 
+  SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "That was a good fight !";
 }
 

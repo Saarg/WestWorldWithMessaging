@@ -8,7 +8,7 @@ bool Drunkard::HandleMessage(const Telegram& msg)
 
 void Drunkard::Update()
 {
-  SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
+  SetTextColor(FOREGROUND_BLUE| FOREGROUND_INTENSITY);
 	
   //do something ?
 
