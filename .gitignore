@@ -1,8 +1,18 @@
-Debug
-Release
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
 *.sdf
 *.opensdf
-*.vcxproj
 *.vcxproj.filters
 *.XML
 
