@@ -10,8 +10,26 @@
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
 
+#include <SFML/Graphics.hpp>
 
 std::ofstream os;
+
+void RenderingLoop(sf::RenderWindow* window)
+{
+	while (window->isOpen())
+    {
+        sf::Event event;
+        while (window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window->close();
+        }
+
+		window->clear(sf::Color(220, 220, 220));
+
+		window->display();
+    }
+}
 
 int main()
 {
@@ -19,6 +37,13 @@ int main()
 #ifdef TEXTOUTPUT
   os.open("output.txt");
 #endif
+
+  //GUI
+  sf::RenderWindow window(sf::VideoMode(800, 600), "TP1 - Bob, Elsa & Jean");
+  window.setActive(false);
+
+  sf::Thread thread(&RenderingLoop, &window);
+  thread.launch();
 
   //seed random number generator
   srand((unsigned) time(NULL));
@@ -36,10 +61,8 @@ int main()
   EntityMgr->RegisterEntity(Bob);
   EntityMgr->RegisterEntity(Elsa);
   EntityMgr->RegisterEntity(Jean);
-
-  //run Bob and Elsa through a few Update calls
-  for (int i=0; i<30; ++i)
-  { 
+  while (window.isOpen())
+  {
     Bob->Update();
     Elsa->Update();
 	Jean->Update();
@@ -58,9 +81,10 @@ int main()
   //wait for a keypress before exiting
   PressAnyKeyToContinue();
 
-
   return 0;
 }
+
+
 
 
 

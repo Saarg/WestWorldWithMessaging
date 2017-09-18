@@ -11,8 +11,10 @@
 [Dd]ebug/
 [Rr]elease/
 
+*.log
 *.sdf
 *.opensdf
+*.vcxproj
 *.vcxproj.filters
 *.XML
 
