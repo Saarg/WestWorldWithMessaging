@@ -5,3 +5,6 @@ Release
 *.vcxproj
 *.vcxproj.filters
 *.XML
+
+SFML
+SFML-*
