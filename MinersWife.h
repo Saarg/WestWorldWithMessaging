@@ -11,6 +11,7 @@
 //------------------------------------------------------------------------
 
 #include <string>
+#include <SFML/Graphics.hpp>
 
 #include "fsm/State.h"
 #include "BaseGameEntity.h"
@@ -35,12 +36,11 @@ private:
   //is she presently cooking?
   bool            m_bCooking;
 
-
 public:
 
-  MinersWife(int id):m_Location(shack),
+  MinersWife(int id, sf::Mutex& logMutex):m_Location(shack),
                      m_bCooking(false),
-                     BaseGameEntity(id)
+                     BaseGameEntity(id, logMutex)
                                         
   {
     //set up the state machine

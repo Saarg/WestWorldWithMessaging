@@ -38,8 +38,10 @@ void MessageDispatcher::Discharge(BaseGameEntity* pReceiver,
 {
   if (!pReceiver->HandleMessage(telegram))
   {
+	m_logMutex.lock();
     //telegram could not be handled
     cout << "Message not handled";
+	m_logMutex.unlock();
   }
 }
 
@@ -55,6 +57,7 @@ void MessageDispatcher::DispatchMessage(double  delay,
                                         int    msg,
                                         void*  ExtraInfo)
 {
+  m_logMutex.lock();
   SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 
   //get pointers to the sender and receiver
@@ -65,6 +68,7 @@ void MessageDispatcher::DispatchMessage(double  delay,
   if (pReceiver == NULL)
   {
     cout << "\nWarning! No Receiver with ID of " << receiver << " found";
+	m_logMutex.unlock();
 
     return;
   }
@@ -98,6 +102,8 @@ void MessageDispatcher::DispatchMessage(double  delay,
             << ". Msg is "<< MsgToStr(msg);
             
   }
+
+  m_logMutex.unlock();
 }
 
 
@@ -108,6 +114,7 @@ void MessageDispatcher::DispatchMessage(double  delay,
 //------------------------------------------------------------------------
 void MessageDispatcher::DispatchDelayedMessages()
 {
+  m_logMutex.lock();
   SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
   
   //get current time
@@ -135,6 +142,7 @@ void MessageDispatcher::DispatchDelayedMessages()
     //remove it from the queue
     PriorityQ.erase(PriorityQ.begin());
   }
+  m_logMutex.unlock();
 }
 
 

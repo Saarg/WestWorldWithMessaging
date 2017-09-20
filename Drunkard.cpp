@@ -8,11 +8,15 @@ bool Drunkard::HandleMessage(const Telegram& msg)
 
 void Drunkard::Update()
 {
-  SetTextColor(FOREGROUND_BLUE| FOREGROUND_INTENSITY);
-	
-  //do something ?
+	while (true) {
+		LockConsole();  
+		SetTextColor(FOREGROUND_BLUE| FOREGROUND_INTENSITY);
 
-  m_pStateMachine->Update();
+		m_pStateMachine->Update();
+		UnLockConsole(); 
+
+		sf::sleep(sf::milliseconds(800));
+	}
 }
 
 bool Drunkard::Drunk()const

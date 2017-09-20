@@ -56,12 +56,12 @@ private:
 
 public:
 
-  Miner(int id):m_Location(shack),
+  Miner(int id, sf::Mutex& logMutex):m_Location(shack),
                           m_iGoldCarried(0),
                           m_iMoneyInBank(0),
                           m_iThirst(0),
                           m_iFatigue(0),
-                          BaseGameEntity(id)
+                          BaseGameEntity(id, logMutex)
                                
   {
     //set up state machine
@@ -82,6 +82,7 @@ public:
 
   
   StateMachine<Miner>* GetFSM()const{return m_pStateMachine;}
+
 
 
   

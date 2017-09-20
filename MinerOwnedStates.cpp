@@ -265,18 +265,18 @@ void QuenchThirst::Execute(Miner* pMiner)
 void QuenchThirst::Exit(Miner* pMiner)
 { 
   SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
-  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon";
 }
 
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
-
   switch(msg.Msg)
   {
     case Msg_Fight:
     {
+	  pMiner->LockConsole();
+	  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
       cout << "\nMessage received by " << GetNameOfEntity(msg.Sender) <<
            " at time: " << Clock->GetCurrentTime();
 
@@ -284,7 +284,7 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 	  cout << "\n" << GetNameOfEntity(msg.Receiver) << ": If we have to fight i'll destroy you !"; 
 
 	  pMiner->GetFSM()->ChangeState(StartFighting::Instance());
-
+	  pMiner->UnLockConsole();
     }
 
     return true;

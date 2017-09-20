@@ -12,6 +12,7 @@
 #include <string>
 #include <cassert>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 #include "BaseGameEntity.h"
 #include "Locations.h"
@@ -43,14 +44,13 @@ private:
 
   //the higher the value, the more tired the drunkard
   int                   m_iFatigue;
-
-
+  
 public:
 
-  Drunkard(int id):m_Location(drunkardShack),
+  Drunkard(int id, sf::Mutex& logMutex):m_Location(drunkardShack),
                           m_AlcoholLevel(0),
 						  m_iFatigue(0),
-                          BaseGameEntity(id)
+                          BaseGameEntity(id, logMutex)
                                
   {
     //set up state machine

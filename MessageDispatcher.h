@@ -13,7 +13,7 @@
 #pragma warning (disable:4786)
 
 #include <set>
-
+#include <SFML/Graphics.hpp>
 
 #include "misc/ConsoleUtils.h"
 #include "messaging/Telegram.h"
@@ -43,11 +43,14 @@ private:
   //entity, pReceiver, with the newly created telegram
   void Discharge(BaseGameEntity* pReceiver, const Telegram& msg);
 
-  MessageDispatcher(){}
+  MessageDispatcher(){
+  }
 
   //copy ctor and assignment should be private
   MessageDispatcher(const MessageDispatcher&);
   MessageDispatcher& operator=(const MessageDispatcher&);
+
+  sf::Mutex  m_logMutex;
 
 public:
 
@@ -64,6 +67,9 @@ public:
   //send out any delayed messages. This method is called each time through   
   //the main game loop.
   void DispatchDelayedMessages();
+
+  sf::Mutex&	GetLogMutex(){ return m_logMutex; }
+  
 };
 
 

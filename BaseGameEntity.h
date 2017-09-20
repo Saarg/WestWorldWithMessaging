@@ -10,6 +10,7 @@
 //
 //------------------------------------------------------------------------
 #include <string>
+#include <SFML/Graphics.hpp>
 
 #include "messaging/Telegram.h"
 
@@ -26,6 +27,8 @@ private:
   //this value is updated
   static int  m_iNextValidID;
 
+  sf::Mutex&  m_logMutex;
+
   //this must be called within the constructor to make sure the ID is set
   //correctly. It verifies that the value passed to the method is greater
   //or equal to the next valid ID, before setting the ID and incrementing
@@ -34,7 +37,7 @@ private:
 
 public:
 
-  BaseGameEntity(int id)
+  BaseGameEntity(int id, sf::Mutex& logMutex): m_logMutex(logMutex)
   {
     SetID(id);
   }
@@ -49,6 +52,9 @@ public:
   virtual bool  HandleMessage(const Telegram& msg)=0;
 
   int           ID()const{return m_ID;}  
+
+  void			LockConsole(){ m_logMutex.lock(); }
+  void			UnLockConsole(){ m_logMutex.unlock(); }
 };
 
 

@@ -49,24 +49,30 @@ int main()
   srand((unsigned) time(NULL));
 
   //create a miner
-  Miner* Bob = new Miner(ent_Miner_Bob);
+  Miner* Bob = new Miner(ent_Miner_Bob, Dispatch->GetLogMutex());
 
   //create his wife
-  MinersWife* Elsa = new MinersWife(ent_Elsa);
+  MinersWife* Elsa = new MinersWife(ent_Elsa, Dispatch->GetLogMutex());
 
   //create Drunkard
-  Drunkard* Jean = new Drunkard(ent_Jean);
+  Drunkard* Jean = new Drunkard(ent_Jean, Dispatch->GetLogMutex());
 
   //register them with the entity manager
   EntityMgr->RegisterEntity(Bob);
   EntityMgr->RegisterEntity(Elsa);
   EntityMgr->RegisterEntity(Jean);
+
+  sf::Thread bobThread(&Miner::Update, Bob);
+  sf::Thread elsaThread(&MinersWife::Update, Elsa);
+  sf::Thread jeanThread(&Drunkard::Update, Jean);
+
+  // Launch all agents
+  bobThread.launch();
+  elsaThread.launch();
+  jeanThread.launch();
+
   while (window.isOpen())
   {
-    Bob->Update();
-    Elsa->Update();
-	Jean->Update();
-
     //dispatch any delayed messages
     Dispatch->DispatchDelayedMessages();
 
