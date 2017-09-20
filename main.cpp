@@ -13,6 +13,42 @@
 #include <SFML/Graphics.hpp>
 
 std::ofstream os;
+sf::RenderWindow *window = nullptr;
+
+void WindowParameters()
+{
+	window = new sf::RenderWindow(sf::VideoMode(1700, 600),"TP1 - Bob, Elsa & Jean");
+	while (window->isOpen())
+    {
+        sf::Event event;
+        while (window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window->close();
+        }
+		window->clear(sf::Color(0, 0, 0));
+		//Debut
+		//On load les textures
+		sf::Texture SM_Bob;SM_Bob.loadFromFile("FSM-MinerBob.jpg");
+		sf::Texture SM_Elsa;SM_Elsa.loadFromFile("FSM-WifeElsa.jpg");
+		sf::Texture SM_Jean;SM_Jean.loadFromFile("FSM-Drunkard.jpg");
+		//On crée les sprites et on les lisses
+		sf::Sprite SBob; SBob.setTexture(SM_Bob); SM_Bob.setSmooth(true);
+		sf::Sprite SElsa; SElsa.setTexture(SM_Elsa); SM_Elsa.setSmooth(true);
+		sf::Sprite SJean; SJean.setTexture(SM_Jean); SM_Jean.setSmooth(true);
+		//On les places correctement
+		SBob.setPosition(sf::Vector2f(50,0));
+		SElsa.setPosition(sf::Vector2f(600, 0));;
+		SJean.setPosition(sf::Vector2f(1150, 0));;
+		//On affiche nos sprites
+		window->draw(SBob);
+		window->draw(SElsa);
+		window->draw(SJean);
+		//Fin 
+		window->display();
+    }
+}
+
 
 void RenderingLoop(sf::RenderWindow* window)
 {
@@ -39,10 +75,7 @@ int main()
 #endif
 
   //GUI
-  sf::RenderWindow window(sf::VideoMode(800, 600), "TP1 - Bob, Elsa & Jean");
-  window.setActive(false);
-
-  sf::Thread thread(&RenderingLoop, &window);
+  sf::Thread thread(WindowParameters);
   thread.launch();
 
   //seed random number generator
@@ -71,7 +104,7 @@ int main()
   elsaThread.launch();
   jeanThread.launch();
 
-  while (window.isOpen())
+  for (;;)
   {
     //dispatch any delayed messages
     Dispatch->DispatchDelayedMessages();
