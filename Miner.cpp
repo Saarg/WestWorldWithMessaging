@@ -18,6 +18,7 @@ void Miner::Update()
 		UnLockConsole();  
 
 		sf::sleep(sf::milliseconds(800));
+		
 	}
 }
 
