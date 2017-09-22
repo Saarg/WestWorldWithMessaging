@@ -36,7 +36,7 @@ int main()
 	ButtonFunctionManager* buttonFunctionManager = new ButtonFunctionManager(Bob,Elsa,Jean);
 
 	//Generate GUI
-	GUI* gui = new GUI(buttonFunctionManager);
+	GUI* gui = new GUI(buttonFunctionManager,Bob,Elsa,Jean);
 
 	//register them with the entity manager
 	EntityMgr->RegisterEntity(Bob);
