@@ -1,8 +1,27 @@
 #include "GUI.h"
 
-GUI::GUI(bool isRunning, bool isExit):window(nullptr), _isRunning(isRunning), _isExit(isExit)                               
+GUI::GUI(ButtonFunctionManager* btnFunctionManager):
+	window(nullptr), _isRunning(false), _isExit(false),
+	buttonFunctionManager(btnFunctionManager)	
 {
 	Start();
+	mouseToggleState=true;
+
+	buttons.push_back(buttonPlayPause);
+	buttons.push_back(buttonEnterMineAndDigForNugget);
+	buttons.push_back(buttonVisitBankAndDepositGold);
+	buttons.push_back(buttonQuenchThirst);
+	buttons.push_back(buttonGoHomeAndSleepTilRestedMiner);
+	buttons.push_back(buttonStartAndKeepFightingMiner);
+	buttons.push_back(buttonEatStew);
+	buttons.push_back(buttonVisitBathroom);
+	buttons.push_back(buttonDoHouseWork);
+	buttons.push_back(buttonCookStew);
+	buttons.push_back(buttonGoBarAndDrink);
+	buttons.push_back(buttonBecameDrunkAndAgressive);
+	buttons.push_back(buttonGoHomeAndSleepTilRestedDrunkard);
+	buttons.push_back(buttonStartAndKeepFightingDrunkard);
+
 	ptr_GUIThread = new sf::Thread(&GUI::Update, this);
 	ptr_GUIThread->launch();
 }
@@ -21,15 +40,20 @@ void GUI::Start()
 	header.setSize(sf::Vector2f(1700, 50));
 	header.setFillColor(sf::Color(100, 100, 100));
 	// On gère le button "Play/Pause"
-	buttonPlayPause = new Button(800,5,150,40,"Play/Pause", sf::Color(100,0,100));
-	/*start.setSize(sf::Vector2f(150, 40));
-	start.setPosition(sf::Vector2f(800,5));
-	start.setFillColor(sf::Color(150, 150, 150));	
-	sf::Font* font = new sf::Font();
-	if (!font->loadFromFile("arial.ttf"))
-		return;
-	startText = sf::Text("Play/Pause", *font, 25);
-	startText.setPosition(sf::Vector2f(810,8));*/
+	buttonPlayPause = new Button(800,5,150,40,"Play/Pause", sf::Color(100,0,100), std::bind(&ButtonFunctionManager::PlayPauseGame,buttonFunctionManager));
+	buttonEnterMineAndDigForNugget = new Button(240,190,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerEnterMineAndDigForNugget,buttonFunctionManager));
+	buttonVisitBankAndDepositGold = new Button(60,245,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerVisitBankAndDepositGold,buttonFunctionManager));
+	buttonQuenchThirst = new Button(440,190,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerQuenchThirst,buttonFunctionManager));
+	buttonGoHomeAndSleepTilRestedMiner = new Button(240,325,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerGoHomeAndSleepTilRested,buttonFunctionManager));
+	buttonStartAndKeepFightingMiner = new Button(440,325,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerStartAndKeepFighting,buttonFunctionManager));
+	buttonEatStew = new Button(240,425,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinerEatStew,buttonFunctionManager));
+	buttonVisitBathroom = new Button(645,225,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinersWifeVisitBathroom,buttonFunctionManager));
+	buttonDoHouseWork = new Button(935,225,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinersWifeDoHouseWork,buttonFunctionManager));
+	buttonCookStew = new Button(765,380,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateMinersWifeCookStew,buttonFunctionManager));
+	buttonGoBarAndDrink = new Button(1155,165,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardGoBarAndDrink,buttonFunctionManager));
+	buttonBecameDrunkAndAgressive = new Button(1450,165,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardBecameDrunkAndAgressive,buttonFunctionManager));
+	buttonGoHomeAndSleepTilRestedDrunkard = new Button(1300,305,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardGoHomeAndSleepTilRested,buttonFunctionManager));
+	buttonStartAndKeepFightingDrunkard = new Button(1555,305,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardStartAndKeepFighting,buttonFunctionManager));
 
 	// Graphs
 	//On load les textures
@@ -55,14 +79,17 @@ void GUI::Update()
 		{
 			if (event.type == sf::Event::Closed)
 				window->close();
-			if(event.type == sf::Event::MouseButtonPressed){
-				
-			}
 		}
 
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-			std::cout<<"slkgfbdlfglsdfgsdfgsldf";
+			if(mouseToggleState == true){
+				mouseToggleState=false;
 				CheckForButtons();
+			}
+		}else{
+			if(mouseToggleState == false){
+				mouseToggleState=true;
+			}
 		}
 		
 		// Clean window
@@ -71,25 +98,41 @@ void GUI::Update()
 		//On affiche nos sprites
 		//Header
 		window->draw(header);
-		window->draw(buttonPlayPause->sprite);
 		window->draw(buttonPlayPause->shape);
 		window->draw(buttonPlayPause->buttonText);
+		
 		
 		// Graph
 		window->draw(SBob);
 		window->draw(SElsa);
 		window->draw(SJean);
 
-		// CurrentState
+		// Button Graph
+		window->draw(buttonEnterMineAndDigForNugget->shape);
+		window->draw(buttonVisitBankAndDepositGold->shape);
+		window->draw(buttonQuenchThirst->shape);
+		window->draw(buttonGoHomeAndSleepTilRestedMiner->shape);
+		window->draw(buttonStartAndKeepFightingMiner->shape);
+		window->draw(buttonEatStew->shape);
+		window->draw(buttonVisitBathroom->shape);
+		window->draw(buttonDoHouseWork->shape);
+		window->draw(buttonCookStew->shape);
+		window->draw(buttonGoBarAndDrink->shape);
+		window->draw(buttonBecameDrunkAndAgressive->shape);
+		window->draw(buttonGoHomeAndSleepTilRestedDrunkard->shape);
+		window->draw(buttonStartAndKeepFightingDrunkard->shape);
 
-		//Fin
 		
+		//Fin
 		window->display();
-		sf::sleep(sf::milliseconds(800));
 	}
 }
 
 void GUI::CheckForButtons()
 {
-	buttonPlayPause->CheckCursor(sf::Mouse::getPosition().x,sf::Mouse::getPosition().y);
+	for(unsigned int i=0; i<buttons.size(); i++){
+		if(buttons[i]->CheckCursor(sf::Mouse::getPosition(*window).x,sf::Mouse::getPosition(*window).y)){
+			buttons[i]->ExecuteFunction();
+		}
+	}
 }

@@ -111,7 +111,7 @@ void BecomeDrunkAndAgressive::Execute(Drunkard* pDrunkard)
   //if enough tired, go to sleep
   if (pDrunkard->Fatigued())
   {
-    pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
+    pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRestedDrunkard::Instance());
   }
 }
 
@@ -142,7 +142,7 @@ bool BecomeDrunkAndAgressive::OnMessage(Drunkard* pDrunkard, const Telegram& msg
                               Msg_Fight,   //the message
                               NO_ADDITIONAL_INFO); 
 
-	  pDrunkard->GetFSM()->ChangeState(StartAndKeepFighting::Instance());
+	  pDrunkard->GetFSM()->ChangeState(StartAndKeepFightingDrunkard::Instance());
 
     }
 
@@ -152,16 +152,16 @@ bool BecomeDrunkAndAgressive::OnMessage(Drunkard* pDrunkard, const Telegram& msg
 
   return false;
 }
-//------------------------------------------------------------------------methods for StartAndKeepFighting
+//------------------------------------------------------------------------methods for StartAndKeepFightingDrunkard
 
-GoHomeAndSleepTilRested* GoHomeAndSleepTilRested::Instance()
+GoHomeAndSleepTilRestedDrunkard* GoHomeAndSleepTilRestedDrunkard::Instance()
 {
-  static GoHomeAndSleepTilRested instance;
+  static GoHomeAndSleepTilRestedDrunkard instance;
 
   return &instance;
 }
 
-void GoHomeAndSleepTilRested::Enter(Drunkard* pDrunkard)
+void GoHomeAndSleepTilRestedDrunkard::Enter(Drunkard* pDrunkard)
 {
   if (pDrunkard->Location() != drunkardShack)
   {
@@ -172,7 +172,7 @@ void GoHomeAndSleepTilRested::Enter(Drunkard* pDrunkard)
   }
 }
 
-void GoHomeAndSleepTilRested::Execute(Drunkard* pDrunkard)
+void GoHomeAndSleepTilRestedDrunkard::Execute(Drunkard* pDrunkard)
 { 
   //if Drunkard is not fatigued start to dig for nuggets again.
 	if (!pDrunkard->Fatigued() && pDrunkard->Sober())
@@ -195,50 +195,50 @@ void GoHomeAndSleepTilRested::Execute(Drunkard* pDrunkard)
   } 
 }
 
-void GoHomeAndSleepTilRested::Exit(Drunkard* pDrunkard)
+void GoHomeAndSleepTilRestedDrunkard::Exit(Drunkard* pDrunkard)
 { 
 }
 
 
-bool GoHomeAndSleepTilRested::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
+bool GoHomeAndSleepTilRestedDrunkard::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
    return false; //send message to global message handler
 }
 
-//------------------------------------------------------------------------StartAndKeepFighting
+//------------------------------------------------------------------------StartAndKeepFightingDrunkard
 
-StartAndKeepFighting* StartAndKeepFighting::Instance()
+StartAndKeepFightingDrunkard* StartAndKeepFightingDrunkard::Instance()
 {
-  static StartAndKeepFighting instance;
+  static StartAndKeepFightingDrunkard instance;
 
   return &instance;
 }
 
-void StartAndKeepFighting::Enter(Drunkard* pDrunkard)
+void StartAndKeepFightingDrunkard::Enter(Drunkard* pDrunkard)
 {
 	SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
     cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "I gonna rekt ur ass dude !";
 }
 
-void StartAndKeepFighting::Execute(Drunkard* pDrunkard)
+void StartAndKeepFightingDrunkard::Execute(Drunkard* pDrunkard)
 {
   //pDrunkard->HitBob();
   SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Smashing Bob";
 
   // if( BobIsKO || DrunkardIsKO)
-  pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());  
+  pDrunkard->GetFSM()->ChangeState(GoHomeAndSleepTilRestedDrunkard::Instance());  
 }
 
 
-void StartAndKeepFighting::Exit(Drunkard* pDrunkard)
+void StartAndKeepFightingDrunkard::Exit(Drunkard* pDrunkard)
 { 
   SetTextColor(FOREGROUND_BLUE|FOREGROUND_INTENSITY);
   cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "That was a good fight !";
 }
 
 
-bool StartAndKeepFighting::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
+bool StartAndKeepFightingDrunkard::OnMessage(Drunkard* pDrunkard, const Telegram& msg)
 {
   //send msg to global message handler
   return false;

@@ -2,49 +2,54 @@
 
 bool Drunkard::HandleMessage(const Telegram& msg)
 {
-  return m_pStateMachine->HandleMessage(msg);
+	return m_pStateMachine->HandleMessage(msg);
 }
 
 
 void Drunkard::Update()
 {
+	isUpdating=true;
 	while (true) {
-		LockConsole();  
-		SetTextColor(FOREGROUND_BLUE| FOREGROUND_INTENSITY);
+		if(isUpdating){
+			LockConsole();  
+			SetTextColor(FOREGROUND_BLUE| FOREGROUND_INTENSITY);
 
-		m_pStateMachine->Update();
-		UnLockConsole(); 
+			m_pStateMachine->Update();
+			UnLockConsole(); 
 
-		sf::sleep(sf::milliseconds(800));
+			sf::sleep(sf::milliseconds(800));
+		}
 	}
 }
 
+
+
 bool Drunkard::Drunk()const
 {
-  if (m_AlcoholLevel > AlcoholThreshold)
-  {
-    return true;
-  }
+	if (m_AlcoholLevel > AlcoholThreshold)
+	{
+		return true;
+	}
 
-  return false;
+	return false;
 }
 
 bool Drunkard::Sober()const
 {
-  if (m_AlcoholLevel <= 0)
-  {
-    return true;
-  }
+	if (m_AlcoholLevel <= 0)
+	{
+		return true;
+	}
 
-  return false;
+	return false;
 }
 
 bool Drunkard::Fatigued()const
 {
-  if (m_iFatigue > TirednessThreshold)
-  {
-    return true;
-  }
+	if (m_iFatigue > TirednessThreshold)
+	{
+		return true;
+	}
 
-  return false;
+	return false;
 }

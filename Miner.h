@@ -36,7 +36,7 @@ const int TirednessThresholdMiner = 5;
 
 class Miner : public BaseGameEntity
 {
-private:
+public:
 
   //an instance of the state machine class
   StateMachine<Miner>*  m_pStateMachine;

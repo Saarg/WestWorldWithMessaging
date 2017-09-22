@@ -10,9 +10,11 @@
 #include <string>
 #include <cassert>
 #include <iostream>
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+#include "ButtonFunctionManager.h"
 
 class GUI
 {
@@ -20,6 +22,10 @@ public:
 
 	sf::RenderWindow *window;
 	sf::Thread* ptr_GUIThread;
+	ButtonFunctionManager* buttonFunctionManager;
+	std::vector<Button*> buttons;
+	bool mouseToggleState;
+
 
 	//GUI state
 	bool _isRunning;
@@ -28,6 +34,19 @@ public:
 	//GUI items Header
 	sf::RectangleShape header;
 	Button* buttonPlayPause;
+	Button* buttonEnterMineAndDigForNugget;
+	Button* buttonVisitBankAndDepositGold;
+	Button* buttonQuenchThirst;
+	Button* buttonGoHomeAndSleepTilRestedMiner;
+	Button* buttonStartAndKeepFightingMiner;
+	Button* buttonEatStew;
+	Button* buttonVisitBathroom;
+	Button* buttonDoHouseWork;
+	Button* buttonCookStew;
+	Button* buttonGoBarAndDrink;
+	Button* buttonBecameDrunkAndAgressive;
+	Button* buttonGoHomeAndSleepTilRestedDrunkard;
+	Button* buttonStartAndKeepFightingDrunkard;
 
 	sf::Texture SM_Bob;
 	sf::Texture SM_Elsa;
@@ -39,12 +58,14 @@ public:
 
 public:
 
-	GUI(bool isRunning, bool isExit);
+	GUI(ButtonFunctionManager* buttonFunctionManager);
 	GUI::~GUI();
 
 	void Start();
 	void Update(); 
 	void CheckForButtons();
+
+	static void test(){std::cout<<"GOOOOD";}
 
 };
 

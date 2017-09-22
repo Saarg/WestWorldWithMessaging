@@ -86,20 +86,20 @@ public:
 //  drunkard will go home and sleep until his fatigue is decreased
 //  sufficiently
 //------------------------------------------------------------------------
-class GoHomeAndSleepTilRested : public State<Drunkard>
+class GoHomeAndSleepTilRestedDrunkard : public State<Drunkard>
 {
 private:
   
-  GoHomeAndSleepTilRested(){}
+  GoHomeAndSleepTilRestedDrunkard(){}
 
   //copy ctor and assignment should be private
-  GoHomeAndSleepTilRested(const GoHomeAndSleepTilRested&);
-  GoHomeAndSleepTilRested& operator=(const GoHomeAndSleepTilRested&);
+  GoHomeAndSleepTilRestedDrunkard(const GoHomeAndSleepTilRestedDrunkard&);
+  GoHomeAndSleepTilRestedDrunkard& operator=(const GoHomeAndSleepTilRestedDrunkard&);
  
 public:
 
   //this is a singleton
-  static GoHomeAndSleepTilRested* Instance();
+  static GoHomeAndSleepTilRestedDrunkard* Instance();
 
   virtual void Enter(Drunkard* miner);
 
@@ -117,20 +117,20 @@ public:
 //  his thirst is quenched. When satisfied he returns to the goldmine
 //  and resumes his quest for nuggets.
 //------------------------------------------------------------------------
-class StartAndKeepFighting : public State<Drunkard>
+class StartAndKeepFightingDrunkard : public State<Drunkard>
 {
 private:
   
-  StartAndKeepFighting(){}
+  StartAndKeepFightingDrunkard(){}
 
   //copy ctor and assignment should be private
-  StartAndKeepFighting(const StartAndKeepFighting&);
-  StartAndKeepFighting& operator=(const StartAndKeepFighting&);
+  StartAndKeepFightingDrunkard(const StartAndKeepFightingDrunkard&);
+  StartAndKeepFightingDrunkard& operator=(const StartAndKeepFightingDrunkard&);
  
 public:
 
   //this is a singleton
-  static StartAndKeepFighting* Instance();
+  static StartAndKeepFightingDrunkard* Instance();
 
   virtual void Enter(Drunkard* drunkard);
 

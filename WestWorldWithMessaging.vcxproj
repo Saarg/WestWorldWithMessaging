@@ -134,6 +134,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="ButtonFunctionManager.cpp" />
     <ClCompile Include="Drunkard.cpp" />
     <ClCompile Include="DrunkardOwnedStates.cpp" />
     <ClCompile Include="EntityManager.cpp">
@@ -173,6 +174,7 @@
   <ItemGroup>
     <ClInclude Include="BaseGameEntity.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonFunctionManager.h" />
     <ClInclude Include="Drunkard.h" />
     <ClInclude Include="DrunkardOwnedStates.h" />
     <ClInclude Include="EntityManager.h" />

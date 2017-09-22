@@ -2,23 +2,25 @@
 
 bool Miner::HandleMessage(const Telegram& msg)
 {
-  return m_pStateMachine->HandleMessage(msg);
+	return m_pStateMachine->HandleMessage(msg);
 }
 
 
 void Miner::Update()
 {
+	isUpdating=true;
 	while (true) {
-		m_iThirst += 1;
-  
-		LockConsole();  
-		SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
+		if(isUpdating){
+			m_iThirst += 1;
 
-		m_pStateMachine->Update();
-		UnLockConsole();  
+			LockConsole();  
+			SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
 
-		sf::sleep(sf::milliseconds(800));
-		
+			m_pStateMachine->Update();
+			UnLockConsole();  
+
+			sf::sleep(sf::milliseconds(800));
+		}
 	}
 }
 
@@ -26,31 +28,31 @@ void Miner::Update()
 
 void Miner::AddToGoldCarried(const int val)
 {
-  m_iGoldCarried += val;
+	m_iGoldCarried += val;
 
-  if (m_iGoldCarried < 0) m_iGoldCarried = 0;
+	if (m_iGoldCarried < 0) m_iGoldCarried = 0;
 }
 
 void Miner::AddToWealth(const int val)
 {
-  m_iMoneyInBank += val;
+	m_iMoneyInBank += val;
 
-  if (m_iMoneyInBank < 0) m_iMoneyInBank = 0;
+	if (m_iMoneyInBank < 0) m_iMoneyInBank = 0;
 }
 
 bool Miner::Thirsty()const
 {
-  if (m_iThirst >= ThirstLevel){return true;}
+	if (m_iThirst >= ThirstLevel){return true;}
 
-  return false;
+	return false;
 }
 
 bool Miner::Fatigued()const
 {
-  if (m_iFatigue > TirednessThresholdMiner)
-  {
-    return true;
-  }
+	if (m_iFatigue > TirednessThresholdMiner)
+	{
+		return true;
+	}
 
-  return false;
+	return false;
 }

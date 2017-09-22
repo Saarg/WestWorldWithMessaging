@@ -173,20 +173,20 @@ public:
 };
 
 
-class StartFighting : public State<Miner>
+class StartAndKeepFightingMiner : public State<Miner>
 {
 private:
   
-  StartFighting(){}
+  StartAndKeepFightingMiner(){}
 
   //copy ctor and assignment should be private
-  StartFighting(const StartFighting&);
-  StartFighting& operator=(const StartFighting&);
+  StartAndKeepFightingMiner(const StartAndKeepFightingMiner&);
+  StartAndKeepFightingMiner& operator=(const StartAndKeepFightingMiner&);
  
 public:
 
   //this is a singleton
-  static StartFighting* Instance();
+  static StartAndKeepFightingMiner* Instance();
 
   virtual void Enter(Miner* drunkard);
 

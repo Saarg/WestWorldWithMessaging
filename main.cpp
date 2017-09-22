@@ -23,9 +23,6 @@ int main()
 	//seed random number generator
 	srand((unsigned) time(NULL));
 
-	//Generate GUI
-	GUI* gui = new GUI(true,false);
-	
 	//create a miner
 	Miner* Bob = new Miner(ent_Miner_Bob, Dispatch->GetLogMutex());
 
@@ -34,6 +31,12 @@ int main()
 
 	//create Drunkard
 	Drunkard* Jean = new Drunkard(ent_Jean, Dispatch->GetLogMutex());
+
+	//Generate ButtonFunctionManager
+	ButtonFunctionManager* buttonFunctionManager = new ButtonFunctionManager(Bob,Elsa,Jean);
+
+	//Generate GUI
+	GUI* gui = new GUI(buttonFunctionManager);
 
 	//register them with the entity manager
 	EntityMgr->RegisterEntity(Bob);
@@ -49,7 +52,7 @@ int main()
 	elsaThread.launch();
 	jeanThread.launch();
 
-	while(gui->_isExit != true){};
+	while(gui->_isExit == false){};
 
 	bobThread.terminate();
 	elsaThread.terminate();

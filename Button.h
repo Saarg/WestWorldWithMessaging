@@ -13,22 +13,31 @@
 
 #include <SFML/Graphics.hpp>
 
+typedef std::function<void (void)> vFunctionCall;
+
 class Button
 {
 public:
-	sf::FloatRect* rect;
+	sf::IntRect rect;
 	sf::RectangleShape shape;
 	sf::Font font;
 	sf::Text buttonText;
-	
+	//void (*funcToCallOnPress)();
+	vFunctionCall func;
+
 public:
 
-	Button( float posX,float posY,float sizeX, float sizeY, std::string text, sf::Color col)
+	Button( float posX,float posY,float sizeX, float sizeY, std::string text, sf::Color col, vFunctionCall tmpFunc) :
+	  func(tmpFunc)
 	{
-		rect = new sf::FloatRect(sf::Vector2f(posX,posY),sf::Vector2f(sizeX,sizeY));
+		rect.left = (int)posX;
+		rect.top = (int)posY;
+		rect.width = (int)sizeX;
+		rect.height = (int)sizeY;
 		shape.setPosition(posX, posY);
 		shape.setSize(sf::Vector2f(sizeX,sizeY));
 		shape.setFillColor(col);
+		shape.setTextureRect(rect);
 		if (!font.loadFromFile("arial.ttf"))
 			return;
 		buttonText = sf::Text(text, font, 25);
@@ -37,13 +46,15 @@ public:
 	Button::~Button();
 
 	bool CheckCursor(int x, int y){
-		sf::Vector2f mousePos((float)x,(float)y);
-		if(rect->getGlobalBounds().contains(mousePos)){
-			std::cout<<"YOLLLOOO!!!";
+		sf::Vector2i mousePos(x,y);
+		if(shape.getTextureRect().contains(mousePos)){
 			return true;
 		}
-		std::cout<<"YO2222222!!!";
 		return false;
+	}
+
+	void ExecuteFunction(){
+		func();
 	}
 
 };

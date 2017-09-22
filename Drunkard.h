@@ -56,7 +56,7 @@ public:
     //set up state machine
     m_pStateMachine = new StateMachine<Drunkard>(this);
     
-    m_pStateMachine->SetCurrentState(GoHomeAndSleepTilRested::Instance());
+    m_pStateMachine->SetCurrentState(GoHomeAndSleepTilRestedDrunkard::Instance());
 
     /* NOTE, A GLOBAL STATE HAS NOT BEEN IMPLEMENTED FOR THE MINER */
   }

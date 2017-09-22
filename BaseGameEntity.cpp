@@ -20,6 +20,10 @@ void BaseGameEntity::SetID(int val)
   assert ( (val >= m_iNextValidID) && "<BaseGameEntity::SetID>: invalid ID");
 
   m_ID = val;
-    
+  isUpdating=false;  
   m_iNextValidID = m_ID + 1;
+}
+
+void BaseGameEntity::ToggleIsUpdating(){
+	isUpdating = !isUpdating;
 }

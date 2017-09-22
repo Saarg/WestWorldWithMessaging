@@ -18,10 +18,16 @@
 class BaseGameEntity
 {
 
+protected :
+	//every entity must have a unique identifying number
+  bool          isUpdating;
+
 private:
 
   //every entity must have a unique identifying number
   int          m_ID;
+
+  
 
   //this is the next valid ID. Each time a BaseGameEntity is instantiated
   //this value is updated
@@ -37,7 +43,7 @@ private:
 
 public:
 
-  BaseGameEntity(int id, sf::Mutex& logMutex): m_logMutex(logMutex)
+  BaseGameEntity(int id, sf::Mutex& logMutex): m_logMutex(logMutex), isUpdating(true)
   {
     SetID(id);
   }
@@ -50,6 +56,8 @@ public:
   //all entities can communicate using messages. They are sent
   //using the MessageDispatcher singleton class
   virtual bool  HandleMessage(const Telegram& msg)=0;
+
+  void ToggleIsUpdating();
 
   int           ID()const{return m_ID;}  
 

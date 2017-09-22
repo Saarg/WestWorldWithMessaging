@@ -283,7 +283,7 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
       SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
 	  cout << "\n" << GetNameOfEntity(msg.Receiver) << ": If we have to fight i'll destroy you !"; 
 
-	  pMiner->GetFSM()->ChangeState(StartFighting::Instance());
+	  pMiner->GetFSM()->ChangeState(StartAndKeepFightingMiner::Instance());
 	  pMiner->UnLockConsole();
     }
 
@@ -330,19 +330,19 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
 
 //------------------------------------------------------------------------StartAndKeepFighting
 
-StartFighting* StartFighting::Instance()
+StartAndKeepFightingMiner* StartAndKeepFightingMiner::Instance()
 {
-  static StartFighting instance;
+  static StartAndKeepFightingMiner instance;
 
   return &instance;
 }
 
-void StartFighting::Enter(Miner* pMiner)
+void StartAndKeepFightingMiner::Enter(Miner* pMiner)
 {
     
 }
 
-void StartFighting::Execute(Miner* pMiner)
+void StartAndKeepFightingMiner::Execute(Miner* pMiner)
 {
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Is getting smashed";
 
@@ -357,13 +357,13 @@ void StartFighting::Execute(Miner* pMiner)
 }
 
 
-void StartFighting::Exit(Miner* pMiner)
+void StartAndKeepFightingMiner::Exit(Miner* pMiner)
 { 
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That was not a good fight !";
 }
 
 
-bool StartFighting::OnMessage(Miner* pMiner, const Telegram& msg)
+bool StartAndKeepFightingMiner::OnMessage(Miner* pMiner, const Telegram& msg)
 {
   //send msg to global message handler
   return false;
