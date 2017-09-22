@@ -25,6 +25,9 @@ public:
 	ButtonFunctionManager* buttonFunctionManager;
 	std::vector<Button*> buttons;
 	bool mouseToggleState;
+	Miner* ptr_Miner;
+	MinersWife* ptr_MinersWife;
+	Drunkard* ptr_Drunkard;
 
 
 	//GUI state
@@ -58,7 +61,7 @@ public:
 
 public:
 
-	GUI(ButtonFunctionManager* buttonFunctionManager);
+	GUI(ButtonFunctionManager* buttonFunctionManager,Miner* ptr_Miner, MinersWife* ptr_MinersWife, Drunkard* ptr_Drunkard);
 	GUI::~GUI();
 
 	void Start();

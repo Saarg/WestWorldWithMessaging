@@ -159,6 +159,7 @@ CookStew* CookStew::Instance()
 
 void CookStew::Enter(MinersWife* wife)
 {
+	cout << "\n" << wife->Cooking();
   //if not already cooking put the stew in the oven
   if (!wife->Cooking())
   {
@@ -166,7 +167,9 @@ void CookStew::Enter(MinersWife* wife)
   
     //send a delayed message myself so that I know when to take the stew
     //out of the oven
-    Dispatch->DispatchMessage(1.5,                  //time delay
+
+	////////// Msg time delay removed cause of bug, elsa can't received delayed msg for some reason ...
+    Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,  //time delay
                               wife->ID(),           //sender ID
                               wife->ID(),           //receiver ID
                               Msg_StewReady,        //msg
@@ -193,9 +196,9 @@ void CookStew::Exit(MinersWife* wife)
 bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
 {
   SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
-
   switch(msg.Msg)
   {
+	  
     case Msg_StewReady:
     {
       cout << "\nMessage received by " << GetNameOfEntity(wife->ID()) <<

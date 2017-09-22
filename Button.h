@@ -22,6 +22,7 @@ public:
 	sf::RectangleShape shape;
 	sf::Font font;
 	sf::Text buttonText;
+	sf::Color ButtonColor;
 	//void (*funcToCallOnPress)();
 	vFunctionCall func;
 
