@@ -1,5 +1,6 @@
 # User-specific files
 *.suo
+*.sdf
 *.user
 *.userosscache
 *.sln.docstates
@@ -12,7 +13,7 @@
 [Rr]elease/
 
 *.log
-*.sdf
+
 *.opensdf
 *.vcxproj
 *.vcxproj.filters
@@ -20,3 +21,4 @@
 
 SFML
 SFML-*
+
