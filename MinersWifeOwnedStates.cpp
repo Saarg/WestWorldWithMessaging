@@ -163,17 +163,7 @@ void CookStew::Enter(MinersWife* wife)
   //if not already cooking put the stew in the oven
   if (!wife->Cooking())
   {
-    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Putting the stew in the oven";
-  
-    //send a delayed message myself so that I know when to take the stew
-    //out of the oven
-
-	////////// Msg time delay removed cause of bug, elsa can't received delayed msg for some reason ...
-    Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,  //time delay
-                              wife->ID(),           //sender ID
-                              wife->ID(),           //receiver ID
-                              Msg_StewReady,        //msg
-                              NO_ADDITIONAL_INFO); 
+    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Putting the stew in the oven";    
 
     wife->SetCooking(true);
   }
@@ -183,6 +173,16 @@ void CookStew::Enter(MinersWife* wife)
 void CookStew::Execute(MinersWife* wife)
 {
   cout << "\n" << GetNameOfEntity(wife->ID()) << ": Fussin' over food";
+
+  if (RandFloat() < 0.8)
+  {
+    Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,  //time delay
+                              wife->ID(),           //sender ID
+                              wife->ID(),           //receiver ID
+                              Msg_StewReady,        //msg
+                              NO_ADDITIONAL_INFO); 
+  }
+  
 }
 
 void CookStew::Exit(MinersWife* wife)
