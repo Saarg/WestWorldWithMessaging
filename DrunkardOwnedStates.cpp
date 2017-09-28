@@ -101,12 +101,6 @@ void BecomeDrunkAndAgressive::Execute(Drunkard* pDrunkard)
 {   
   pDrunkard->IncreaseFatigue();
   cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "is looking for a fight...";
-
-  //if Ben is here : start fighting
-  /*if (pDrunkard->Thirsty())
-  {
-    pDrunkard->GetFSM()->ChangeState(QuenchThirst::Instance());
-  }*/
   
   //if enough tired, go to sleep
   if (pDrunkard->Fatigued())
@@ -118,7 +112,6 @@ void BecomeDrunkAndAgressive::Execute(Drunkard* pDrunkard)
 
 void BecomeDrunkAndAgressive::Exit(Drunkard* pDrunkard)
 {
-  // cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Leavin' the bar cause none wanna fight";
 }
 
 
@@ -140,7 +133,8 @@ bool BecomeDrunkAndAgressive::OnMessage(Drunkard* pDrunkard, const Telegram& msg
                               pDrunkard->ID(),        //ID of sender
                               ent_Miner_Bob,            //ID of recipient
                               Msg_Fight,   //the message
-                              NO_ADDITIONAL_INFO); 
+                              NO_ADDITIONAL_INFO);
+	  pDrunkard->SetIsSendingMsg(true);
 
 	  pDrunkard->GetFSM()->ChangeState(StartAndKeepFightingDrunkard::Instance());
 

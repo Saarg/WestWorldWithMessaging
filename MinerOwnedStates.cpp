@@ -171,7 +171,8 @@ void GoHomeAndSleepTilRestedMiner::Enter(Miner* pMiner)
                               pMiner->ID(),        //ID of sender
                               ent_Elsa,            //ID of recipient
                               Msg_HiHoneyImHome,   //the message
-                              NO_ADDITIONAL_INFO);    
+                              NO_ADDITIONAL_INFO);
+	pMiner->SetIsSendingMsg(true);
   }
 }
 
@@ -246,7 +247,7 @@ void QuenchThirst::Enter(Miner* pMiner)
                               ent_Jean,            //ID of recipient
                               Msg_EnterSaloon,   //the message
                               NO_ADDITIONAL_INFO); 
-
+	pMiner->SetIsSendingMsg(true);
 	SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
   }
 }

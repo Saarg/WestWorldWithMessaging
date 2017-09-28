@@ -181,6 +181,7 @@ void CookStew::Execute(MinersWife* wife)
                               wife->ID(),           //receiver ID
                               Msg_StewReady,        //msg
                               NO_ADDITIONAL_INFO); 
+	wife->SetIsSendingMsg(true);
   }
   
 }
@@ -213,7 +214,7 @@ bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
                                 ent_Miner_Bob,
                                 Msg_StewReady,
                                 NO_ADDITIONAL_INFO);
-
+	  wife->SetIsSendingMsg(true);
       wife->SetCooking(false);
 
       wife->GetFSM()->ChangeState(DoHouseWork::Instance());               

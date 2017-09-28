@@ -51,6 +51,11 @@ public:
 	Button* buttonGoHomeAndSleepTilRestedDrunkard;
 	Button* buttonStartAndKeepFightingDrunkard;
 
+	sf::Texture msgTexture;
+	sf::Sprite msgSpriteBob;
+	sf::Sprite msgSpriteElsa;
+	sf::Sprite msgSpriteJean;
+
 	sf::Texture SM_Bob;
 	sf::Texture SM_Elsa;
 	sf::Texture SM_Jean;

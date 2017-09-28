@@ -21,6 +21,7 @@ class BaseGameEntity
 protected :
 	//every entity must have a unique identifying number
   bool          isUpdating;
+  bool			isSendingMsg;
 
 private:
 
@@ -63,6 +64,8 @@ public:
 
   void			LockConsole(){ m_logMutex.lock(); }
   void			UnLockConsole(){ m_logMutex.unlock(); }
+  bool			GetIsSendingMsg(){return isSendingMsg;}
+  void			SetIsSendingMsg(bool state){isSendingMsg=state;}
 };
 
 

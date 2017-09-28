@@ -58,6 +58,15 @@ void GUI::Start()
 	buttonGoHomeAndSleepTilRestedDrunkard = new Button(1300,305,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardGoHomeAndSleepTilRested,buttonFunctionManager));
 	buttonStartAndKeepFightingDrunkard = new Button(1555,305,90,90,"", sf::Color(100,0,100,0), std::bind(&ButtonFunctionManager::ChangeStateDrunkardStartAndKeepFighting,buttonFunctionManager));
 
+	// Msg sprite
+	msgTexture.loadFromFile("msgTexture.png");
+	msgSpriteBob.setTexture(msgTexture);
+	msgSpriteElsa.setTexture(msgTexture);
+	msgSpriteJean.setTexture(msgTexture);
+	msgSpriteBob.setPosition(sf::Vector2f(50,450));
+	msgSpriteElsa.setPosition(sf::Vector2f(650,500));
+	msgSpriteJean.setPosition(sf::Vector2f(1300,400));
+
 	// Graphs
 	//On load les textures
 	SM_Bob.loadFromFile("FSM-MinerBob.png");
@@ -130,6 +139,7 @@ void GUI::Update()
 		window->draw(buttonBecameDrunkAndAgressive->shape);
 		window->draw(buttonGoHomeAndSleepTilRestedDrunkard->shape);
 		window->draw(buttonStartAndKeepFightingDrunkard->shape);
+
 		//On récupère le nom de l'état courant
 		std::string etat1,etat2,etat3;
 		etat1 = ptr_Miner->GetFSM()->GetNameOfCurrentState();
@@ -209,6 +219,11 @@ void GUI::Update()
 				}
 			}
 		}
+
+		if(ptr_Miner->GetIsSendingMsg()){window->draw(msgSpriteBob);}
+		if(ptr_MinersWife->GetIsSendingMsg()){window->draw(msgSpriteElsa);}
+		if(ptr_Drunkard->GetIsSendingMsg()){window->draw(msgSpriteJean);}
+
 		//Fin
 		window->display();
 	}

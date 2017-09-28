@@ -21,6 +21,7 @@ void BaseGameEntity::SetID(int val)
 
   m_ID = val;
   isUpdating=false;  
+  isSendingMsg=false;
   m_iNextValidID = m_ID + 1;
 }
 
