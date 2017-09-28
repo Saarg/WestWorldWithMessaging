@@ -24,14 +24,14 @@ window(nullptr), _isRunning(false), _isExit(false),
 	buttons.push_back(buttonGoHomeAndSleepTilRestedDrunkard);
 	buttons.push_back(buttonStartAndKeepFightingDrunkard);
 
-	ptr_GUIThread = new sf::Thread(&GUI::Update, this);
-	ptr_GUIThread->launch();
+	//ptr_GUIThread = new sf::Thread(&GUI::Update, this);
+	//ptr_GUIThread->launch();
 }
 
 GUI::~GUI()
 {
-	ptr_GUIThread->terminate();
-	delete ptr_GUIThread;
+	//ptr_GUIThread->terminate();
+	//delete ptr_GUIThread;
 }
 
 void GUI::Start()
@@ -82,151 +82,152 @@ void GUI::Start()
 	SJean.setPosition(sf::Vector2f(1150, 100));
 }
 
-void GUI::Update()
+bool GUI::Update()
 {
 	sf::CircleShape circle(41);circle.setFillColor(sf::Color(255,0,0,98));
 	sf::CircleShape circle2(48);circle2.setFillColor(sf::Color(0,255,0,98));
 	sf::CircleShape circle3(45);circle3.setFillColor(sf::Color(0,0,255,98));
-	while (window->isOpen())
+
+	if (!window->isOpen())
+		return false;
+
+	sf::Event event;
+	while (window->pollEvent(event))
 	{
+		if (event.type == sf::Event::Closed)
+			window->close();
+	}
 
-		sf::Event event;
-		while (window->pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window->close();
-		}
-
-		if(window->hasFocus()){
-			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-				if(mouseToggleState == true){
-					mouseToggleState=false;
-					CheckForButtons();
-				}
-			}else{
-				if(mouseToggleState == false){
-					mouseToggleState=true;
-				}
+	if(window->hasFocus()){
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+			if(mouseToggleState == true){
+				mouseToggleState=false;
+				CheckForButtons();
+			}
+		}else{
+			if(mouseToggleState == false){
+				mouseToggleState=true;
 			}
 		}
+	}
 
-		// Clean window
-		window->clear(sf::Color(255, 255, 255));
+	// Clean window
+	window->clear(sf::Color(255, 255, 255));
 
-		//On affiche nos sprites
-		//Header
-		window->draw(header);
-		window->draw(buttonPlayPause->shape);
-		window->draw(buttonPlayPause->buttonText);
+	//On affiche nos sprites
+	//Header
+	window->draw(header);
+	window->draw(buttonPlayPause->shape);
+	window->draw(buttonPlayPause->buttonText);
 
 
-		// Graph
-		window->draw(SBob);
-		window->draw(SElsa);
-		window->draw(SJean);
+	// Graph
+	window->draw(SBob);
+	window->draw(SElsa);
+	window->draw(SJean);
 
-		// Button Graph
-		window->draw(buttonEnterMineAndDigForNugget->shape);
-		window->draw(buttonVisitBankAndDepositGold->shape);
-		window->draw(buttonQuenchThirst->shape);
-		window->draw(buttonGoHomeAndSleepTilRestedMiner->shape);
-		window->draw(buttonStartAndKeepFightingMiner->shape);
-		window->draw(buttonEatStew->shape);
-		window->draw(buttonVisitBathroom->shape);
-		window->draw(buttonDoHouseWork->shape);
-		window->draw(buttonCookStew->shape);
-		window->draw(buttonGoBarAndDrink->shape);
-		window->draw(buttonBecameDrunkAndAgressive->shape);
-		window->draw(buttonGoHomeAndSleepTilRestedDrunkard->shape);
-		window->draw(buttonStartAndKeepFightingDrunkard->shape);
+	// Button Graph
+	window->draw(buttonEnterMineAndDigForNugget->shape);
+	window->draw(buttonVisitBankAndDepositGold->shape);
+	window->draw(buttonQuenchThirst->shape);
+	window->draw(buttonGoHomeAndSleepTilRestedMiner->shape);
+	window->draw(buttonStartAndKeepFightingMiner->shape);
+	window->draw(buttonEatStew->shape);
+	window->draw(buttonVisitBathroom->shape);
+	window->draw(buttonDoHouseWork->shape);
+	window->draw(buttonCookStew->shape);
+	window->draw(buttonGoBarAndDrink->shape);
+	window->draw(buttonBecameDrunkAndAgressive->shape);
+	window->draw(buttonGoHomeAndSleepTilRestedDrunkard->shape);
+	window->draw(buttonStartAndKeepFightingDrunkard->shape);
 
-		//On récupère le nom de l'état courant
-		std::string etat1,etat2,etat3;
-		etat1 = ptr_Miner->GetFSM()->GetNameOfCurrentState();
-		etat2 = ptr_MinersWife->GetFSM()->GetNameOfCurrentState();
-		etat3 = ptr_Drunkard->GetFSM()->GetNameOfCurrentState();
-		//Tableau de leurs états
-		std::string MinerStat[][6] = {"EnterMineAndDigForNugget","VisitBankAndDepositGold","GoHomeAndSleepTilRestedMiner","QuenchThirst","EatStew","StartAndKeepFightingMiner"};
-		std::string WifeStat[][3] = {"DoHouseWork","VisitBathroom","CookStew"};
-		std::string DrunkardStat[][4] = {"GoBarAndDrink","BecomeDrunkAndAgressive","GoHomeAndSleepTilRestedDrunkard","StartAndKeepFightingDrunkard"};
-		//On compare l'état actuel au tableau des états
-		//Bob
-		if(etat1.compare(MinerStat[0][0]) == 0){
-			circle.setPosition(249,198);
+	//On récupère le nom de l'état courant
+	std::string etat1,etat2,etat3;
+	etat1 = ptr_Miner->GetFSM()->GetNameOfCurrentState();
+	etat2 = ptr_MinersWife->GetFSM()->GetNameOfCurrentState();
+	etat3 = ptr_Drunkard->GetFSM()->GetNameOfCurrentState();
+	//Tableau de leurs états
+	std::string MinerStat[][6] = {"EnterMineAndDigForNugget","VisitBankAndDepositGold","GoHomeAndSleepTilRestedMiner","QuenchThirst","EatStew","StartAndKeepFightingMiner"};
+	std::string WifeStat[][3] = {"DoHouseWork","VisitBathroom","CookStew"};
+	std::string DrunkardStat[][4] = {"GoBarAndDrink","BecomeDrunkAndAgressive","GoHomeAndSleepTilRestedDrunkard","StartAndKeepFightingDrunkard"};
+	//On compare l'état actuel au tableau des états
+	//Bob
+	if(etat1.compare(MinerStat[0][0]) == 0){
+		circle.setPosition(249,198);
+		window->draw(circle);
+	}
+	else{
+		if(etat1.compare(MinerStat[0][1]) == 0){
+			circle.setPosition(60,251);
 			window->draw(circle);
 		}
 		else{
-			if(etat1.compare(MinerStat[0][1]) == 0){
-				circle.setPosition(60,251);
+			if(etat1.compare(MinerStat[0][2]) == 0){
+				circle.setPosition(249,325);
 				window->draw(circle);
 			}
 			else{
-				if(etat1.compare(MinerStat[0][2]) == 0){
-					circle.setPosition(249,325);
+				if(etat1.compare(MinerStat[0][3]) == 0){
+					circle.setPosition(438,198);
 					window->draw(circle);
 				}
 				else{
-					if(etat1.compare(MinerStat[0][3]) == 0){
-						circle.setPosition(438,198);
+					if(etat1.compare(MinerStat[0][4]) == 0){
+						circle.setPosition(250,435);
 						window->draw(circle);
 					}
 					else{
-						if(etat1.compare(MinerStat[0][4]) == 0){
-							circle.setPosition(250,435);
-							window->draw(circle);
-						}
-						else{
-							circle.setPosition(439,325);
-							window->draw(circle);
-						}
+						circle.setPosition(439,325);
+						window->draw(circle);
 					}
 				}
 			}
 		}
-		//Elsa
-		if(etat2.compare(WifeStat[0][0]) == 0){
-			circle2.setPosition(921,217);
+	}
+	//Elsa
+	if(etat2.compare(WifeStat[0][0]) == 0){
+		circle2.setPosition(921,217);
+		window->draw(circle2);
+	}
+	else{
+		if(etat2.compare(WifeStat[0][1]) == 0){
+			circle2.setPosition(647,218);
 			window->draw(circle2);
 		}
 		else{
-			if(etat2.compare(WifeStat[0][1]) == 0){
-				circle2.setPosition(647,218);
-				window->draw(circle2);
-			}
-			else{
-				circle2.setPosition(771,385);
-				window->draw(circle2);
-			}
+			circle2.setPosition(771,385);
+			window->draw(circle2);
 		}
-		//Drunkard
-		if(etat3.compare(DrunkardStat[0][0]) == 0){
-			circle3.setPosition(1155,159);
+	}
+	//Drunkard
+	if(etat3.compare(DrunkardStat[0][0]) == 0){
+		circle3.setPosition(1155,159);
+		window->draw(circle3);
+	}
+	else{
+		if(etat3.compare(DrunkardStat[0][1]) == 0){
+			circle3.setPosition(1451,159);
 			window->draw(circle3);
 		}
 		else{
-			if(etat3.compare(DrunkardStat[0][1]) == 0){
-				circle3.setPosition(1451,159);
+			if(etat3.compare(DrunkardStat[0][2]) == 0){
+				circle3.setPosition(1292,305);
 				window->draw(circle3);
 			}
 			else{
-				if(etat3.compare(DrunkardStat[0][2]) == 0){
-					circle3.setPosition(1292,305);
-					window->draw(circle3);
-				}
-				else{
-					circle3.setPosition(1555,305);
-					window->draw(circle3);
-				}
+				circle3.setPosition(1555,305);
+				window->draw(circle3);
 			}
 		}
-
-		if(ptr_Miner->GetIsSendingMsg()){window->draw(msgSpriteBob);}
-		if(ptr_MinersWife->GetIsSendingMsg()){window->draw(msgSpriteElsa);}
-		if(ptr_Drunkard->GetIsSendingMsg()){window->draw(msgSpriteJean);}
-
-		//Fin
-		window->display();
 	}
+
+	if(ptr_Miner->GetIsSendingMsg()){window->draw(msgSpriteBob);}
+	if(ptr_MinersWife->GetIsSendingMsg()){window->draw(msgSpriteElsa);}
+	if(ptr_Drunkard->GetIsSendingMsg()){window->draw(msgSpriteJean);}
+
+	//Fin
+	window->display();
+	return true;
 }
 
 void GUI::CheckForButtons()

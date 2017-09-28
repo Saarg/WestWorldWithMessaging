@@ -70,7 +70,7 @@ public:
 	GUI::~GUI();
 
 	void Start();
-	void Update(); 
+	bool Update(); 
 	void CheckForButtons();
 
 	static void test(){std::cout<<"GOOOOD";}

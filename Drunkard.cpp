@@ -17,7 +17,7 @@ void Drunkard::Update()
 			m_pStateMachine->Update();
 			UnLockConsole(); 
 
-			sf::sleep(sf::milliseconds(800));
+			sf::sleep(sf::milliseconds(1500));
 			isSendingMsg=false;
 		}
 	}

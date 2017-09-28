@@ -52,7 +52,7 @@ int main()
 	elsaThread.launch();
 	jeanThread.launch();
 
-	while(gui->_isExit == false){};
+	while(gui->Update()){};
 
 	bobThread.terminate();
 	elsaThread.terminate();
